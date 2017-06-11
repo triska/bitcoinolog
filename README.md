@@ -1,13 +1,26 @@
 # Bitcoinolog: Reason about Bitcoin addresses with Prolog
 
-Sample use case:
+## Offline Bitcoin wallet creation
+
+*Bitcoinolog* uses OpenSSL and
+[Prolog](https://www.metalevel.at/prolog) to create Bitcoin addresses
+and private&nbsp;keys with several nice properties:
+
+  - generated keys are *cryptographically&nbsp;secure* to the extent that
+    OpenSSL guarantees this property
+  - the Prolog code is *short* and, with the exception of OpenSSL,
+    uses no external programs
+  - keys can be generated *offline*, on a machine that has no
+    Internet&nbsp;connection.
+
+For example:
 
     ?- repeat,
            new_private_key(PrivateKey),
            private_key_to_public_key(PrivateKey, PublicKey),
            public_key_to_address(PublicKey, Address),
            private_key_to_wif(PrivateKey, WIF),
-           portray_clause((address_key(A,K) :- A = Address, K=WIF)),
+           portray_clause((address_key(A, K) :- A=Address, K=WIF)),
            false.
 
 This Prolog query *generates* Bitcoin addresses and private&nbsp;keys
