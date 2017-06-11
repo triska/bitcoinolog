@@ -12,7 +12,7 @@
 :- use_module(library(clpfd)).
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   Sample use: Encryption and decryption of shared secrete S.
+   Sample use: Encryption and decryption of shared secret S.
 
     ?- named_curve(Name, C),
        curve_G(C, Generator),

@@ -2,9 +2,9 @@
 
 ## Offline Bitcoin wallet creation
 
-*Bitcoinolog* uses OpenSSL and
-[Prolog](https://www.metalevel.at/prolog) to create Bitcoin addresses
-and private&nbsp;keys with several nice properties:
+*Bitcoinolog* uses [Prolog](https://www.metalevel.at/prolog) and
+OpenSSL to create Bitcoin addresses and private&nbsp;keys with several
+nice properties:
 
   - generated keys are *cryptographically&nbsp;secure* to the extent that
     OpenSSL guarantees this property
@@ -13,7 +13,11 @@ and private&nbsp;keys with several nice properties:
   - keys can be generated *offline*, on a machine that has no
     Internet&nbsp;connection.
 
-For example:
+To invoke Bitcoinolog, use for example:
+
+    $ swipl bitcoinolog.pl
+
+Here is an example query that you can try:
 
     ?- repeat,
            new_private_key(PrivateKey),
