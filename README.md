@@ -6,11 +6,11 @@
 OpenSSL to create Bitcoin addresses and private&nbsp;keys with several
 nice properties:
 
-  - generated keys are *cryptographically&nbsp;secure* to the extent that
+  - generated keys are **cryptographically&nbsp;secure** to the extent that
     OpenSSL guarantees this property
-  - the Prolog code is *short* and, with the exception of OpenSSL,
+  - the Prolog code is **short** and, with the exception of OpenSSL,
     uses no external programs
-  - keys can be generated *offline*, on a machine that has no
+  - keys can be generated **offline**, on a machine that has no
     Internet&nbsp;connection.
 
 To invoke Bitcoinolog, use for example:
@@ -46,3 +46,15 @@ in Wallet Import Format&nbsp;(WIF), yielding:
 For more information, visit:
 
 [**https://www.metalevel.at/bitcoinolog/**](https://www.metalevel.at/bitcoinolog/)
+
+## Elliptic Curve Cryptography in Prolog
+
+Bitcoinolog uses [**`ecclog.pl`**](ecclog.pl), which implements
+rudimentary reasoning over *elliptic&nbsp;curves* in&nbsp;Prolog.
+Internally,
+[CLP(FD)&nbsp;constraints](https://www.metalevel.at/prolog/clpfd)
+are&nbsp;used to&nbsp;facilitate
+[declarative&nbsp;debugging](https://www.metalevel.at/prolog/debugging).
+
+In the future, some features of this library may be provided by
+[`library(crypto)`](http://eu.swi-prolog.org/pldoc/man?section=crypto).
