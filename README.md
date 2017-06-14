@@ -13,6 +13,8 @@ nice properties:
   - keys can be generated **offline**, on a machine that has no
     Internet&nbsp;connection.
 
+Bitcoinolog requires SWI-Prolog <b>7.5.9</b> or later.
+
 To invoke Bitcoinolog, use for example:
 
     $ swipl bitcoinolog.pl
