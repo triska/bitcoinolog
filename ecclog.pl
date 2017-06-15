@@ -86,34 +86,42 @@ curve_order(curve(_,_,_,_,Order,_), Order).
    Scalar point multiplication.
 
    R = k*Q.
+
+   The Montgomery ladder method is used to mitigate side-channel
+   attacks such as timing attacks, since the number of multiplications
+   and additions is independent of the private key K. This method does
+   not even reveal the key's Hamming weight (number of 1s).
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 curve_scalar_multiplication(Curve, K, Q, R) :-
-        Upper #= msb(K) + 1,
-        scalar_multiplication(Curve, K, Q, 0-Upper, null-R),
+        Upper #= msb(K),
+        scalar_multiplication(Curve, K, Upper, ml(null,Q)-R),
         must_be_on_curve(Curve, R).
 
-scalar_multiplication(Curve, K, N, I0-I, R0-R) :-
-        zcompare(C, I0, I),
-        scalar_mult_(C, Curve, K, N, I0-I, R0-R).
+scalar_multiplication(Curve, K, I, R0-R) :-
+        zcompare(C, -1, I),
+        scalar_mult_(C, Curve, K, I, R0-R).
 
-scalar_mult_(=, _, _, _, _, R-R).
-scalar_mult_(<, Curve, K, N0, I0-I, R0-R) :-
+scalar_mult_(=, _, _, _, ml(R,_)-R).
+scalar_mult_(<, Curve, K, I0, ML0-R) :-
         BitSet #= K /\ (1 << I0),
         zcompare(C, 0, BitSet),
-        ecc_increase_r(C, Curve, N0, R0, R1),
-        I1 #= I0 + 1,
-        curve_point_double(Curve, N0, N1),
-        scalar_multiplication(Curve, K, N1, I1-I, R1-R).
+        montgomery_step(C, Curve, ML0, ML1),
+        I1 #= I0 - 1,
+        scalar_multiplication(Curve, K, I1, ML1-R).
 
-ecc_increase_r(=, _, _, R, R).
-ecc_increase_r(<, Curve, N, R0, R) :-
-        curve_points_addition(Curve, R0, N, R).
+montgomery_step(=, Curve, ml(R0,S0), ml(R,S)) :-
+        curve_points_addition(Curve, R0, S0, S),
+        curve_point_double(Curve, R0, R).
+montgomery_step(<, Curve, ml(R0,S0), ml(R,S)) :-
+        curve_points_addition(Curve, R0, S0, R),
+        curve_point_double(Curve, S0, S).
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    Doubling a point: R = A + A.
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+curve_point_double(_, null, null).
 curve_point_double(Curve, point(AX,AY), R) :-
         curve_p(Curve, P),
         curve_a(Curve, A),
@@ -134,6 +142,7 @@ curve_points_addition(Curve, P, Q, R) :-
         curve_points_addition_(P, Curve, Q, R).
 
 curve_points_addition_(null, _, P, P).
+curve_points_addition_(P, _, null, P).
 curve_points_addition_(point(AX,AY), Curve, point(BX,BY), R) :-
         curve_p(Curve, P),
         Numerator #= (AY - BY) mod P,

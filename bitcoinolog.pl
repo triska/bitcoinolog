@@ -5,8 +5,8 @@
 
    For more information, visit:
 
-   https://www.metalevel.at/bitcoinolog/
-   =====================================
+                https://www.metalevel.at/bitcoinolog/
+                =====================================
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
