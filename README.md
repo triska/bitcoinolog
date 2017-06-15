@@ -8,12 +8,11 @@ nice properties:
 
   - generated keys are **cryptographically&nbsp;secure** to the extent that
     OpenSSL guarantees this property
-  - the Prolog code is **short** and, with the exception of OpenSSL,
-    uses no external programs
+  - the Prolog code is **short** and uses **no external programs**
   - keys can be generated **offline**, on a machine that has no
     Internet&nbsp;connection.
 
-Bitcoinolog requires SWI-Prolog <b>7.5.9</b> or later.
+Bitcoinolog requires a recent git version of SWI-Prolog.
 
 To invoke Bitcoinolog, use for example:
 
