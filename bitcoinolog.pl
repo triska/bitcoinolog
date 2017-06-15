@@ -61,23 +61,13 @@ bitcoin_curve(Curve) :-
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 new_private_key(Key) :-
-        output_from_process('/usr/bin/openssl', [rand,32], Output),
-        string_codes(Output, Codes),
-        hex_bytes(Hex, Codes),
+        crypto_n_random_bytes(32, Bytes),
+        hex_bytes(Hex, Bytes),
         hex_to_integer(Hex, Key),
         bitcoin_curve(Curve),
         curve_order(Curve, Order),
         Upper #= Order - 1,
         must_be(between(1,Upper), Key).
-
-output_from_process(Exec, Args, Output) :-
-        setup_call_cleanup(process_create(Exec, Args, [stdout(pipe(Stream)),
-                                                       stderr(pipe(Stream))]),
-                           (   set_stream(Stream, encoding(octet)),
-                               read_string(Stream, _, Output)
-                           ),
-                           close(Stream)).
-
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    A public key is a point on the curve, with coordinates (X,Y). In
