@@ -44,15 +44,12 @@ bitcoin_curve(Curve) :-
         named_curve(secp256k1, Curve).
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   Use OpenSSL to generate a random integer between 0 and 2^256.
+   Generate a cryptographically secure random integer between 0 and 2^256.
 
    Almost all such integers can be used as *private keys* for Bitcoin.
 
    If an integer outside the suitable range is generated, an exception
    is thrown. The chances of this happening are extremely low.
-
-   This requires that OpenSSL be installed in /usr/bin/openssl.
-   Please adapt the path if necessary.
 
    Sample use:
 
