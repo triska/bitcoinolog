@@ -18,9 +18,8 @@
                         base58check_to_integer/2
                         ]).
 
-:- use_module(library(crypto)).
 :- use_module(library(clpfd)).
-:- use_module(ecclog).
+:- use_module(library(crypto)).
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    Sample use: Offline generation of Bitcoin addresses.
@@ -41,7 +40,7 @@
 :- set_prolog_flag(double_quotes, chars).
 
 bitcoin_curve(Curve) :-
-        named_curve(secp256k1, Curve).
+        crypto_name_curve(secp256k1, Curve).
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    Generate a cryptographically secure random integer between 0 and 2^256.
@@ -62,7 +61,7 @@ new_private_key(Key) :-
         hex_bytes(Hex, Bytes),
         hex_to_integer(Hex, Key),
         bitcoin_curve(Curve),
-        curve_order(Curve, Order),
+        crypto_curve_order(Curve, Order),
         Upper #= Order - 1,
         must_be(between(1,Upper), Key).
 
@@ -83,9 +82,9 @@ new_private_key(Key) :-
 
 private_key_to_public_key(PrivateKey, PublicKey) :-
         bitcoin_curve(Curve),
-        curve_G(Curve, Generator),
+        crypto_curve_generator(Curve, Generator),
         % 1. Compute the public key as PrivateKey*Generator.
-        curve_scalar_multiplication(Curve, PrivateKey, Generator, point(X,Y)),
+        crypto_curve_scalar_mult(Curve, PrivateKey, Generator, point(X,Y)),
         % 2. PublicKey in compressed form.
         Rem #= Y mod 2,
         zcompare(Cmp, 0, Rem),
