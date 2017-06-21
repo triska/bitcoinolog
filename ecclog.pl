@@ -4,24 +4,24 @@
    Written June 2017 by Markus Triska (triska@metalevel.at)
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-:- module(ecclog, [named_curve/2,
-                   curve_G/2,
-                   curve_order/2,
-                   curve_scalar_multiplication/4]).
+:- module(ecclog, [ecc_name_curve/2,
+                   ecc_curve_generator/2,
+                   ecc_curve_order/2,
+                   ecc_curve_scalar_mult/4]).
 
 :- use_module(library(clpfd)).
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    Sample use: Encryption and decryption of shared secret S.
 
-    ?- named_curve(Name, C),
-       curve_G(C, Generator),
+    ?- ecc_name_curve(Name, C),
+       ecc_curve_generator(C, Generator),
        PrivateKey = 10,
-       curve_scalar_multiplication(C, PrivateKey, Generator, PublicKey),
+       ecc_curve_scalar_mult(C, PrivateKey, Generator, PublicKey),
        Random = 12,
-       curve_scalar_multiplication(C, Random, Generator, R),
-       curve_scalar_multiplication(C, Random, PublicKey, S),
-       curve_scalar_multiplication(C, PrivateKey, R, S).
+       ecc_curve_scalar_mult(C, Random, Generator, R),
+       ecc_curve_scalar_mult(C, Random, PublicKey, S),
+       ecc_curve_scalar_mult(C, PrivateKey, R, S).
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -79,8 +79,9 @@ eea_(<, I0, J0, state(S0,T0,U0,V0), I, U, V) :-
 curve_p(curve(P,_,_,_,_,_), P).
 curve_a(curve(_,A,_,_,_,_), A).
 curve_b(curve(_,_,B,_,_,_), B).
-curve_G(curve(_,_,_,G,_,_), G).
-curve_order(curve(_,_,_,_,Order,_), Order).
+
+ecc_curve_order(curve(_,_,_,_,Order,_), Order).
+ecc_curve_generator(curve(_,_,_,G,_,_), G).
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    Scalar point multiplication.
@@ -93,7 +94,7 @@ curve_order(curve(_,_,_,_,Order,_), Order).
    not even reveal the key's Hamming weight (number of 1s).
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-curve_scalar_multiplication(Curve, K, Q, R) :-
+ecc_curve_scalar_mult(Curve, K, Q, R) :-
         Upper #= msb(K),
         scalar_multiplication(Curve, K, Upper, ml(null,Q)-R),
         must_be_on_curve(Curve, R).
@@ -185,19 +186,19 @@ must_be_on_curve(Curve, P) :- curve_contains_point(Curve, P).
    You must remove the leading "04:" from the generator.
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-named_curve(secp112r1,
-         curve(0x00db7c2abf62e35e668076bead208b,
-               0x00db7c2abf62e35e668076bead2088,
-               0x659ef8ba043916eede8911702b22,
-               point(0x09487239995a5ee76b55f9c2f098,
-                     0xa89ce5af8724c0a23e0e0ff77500),
-               0x00db7c2abf62e35e7628dfac6561c5,
-               1)).
-named_curve(secp256k1,
-         curve(0x00fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f,
-               0x0,
-               0x7,
-               point(0x79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798,
-                     0x483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8),
-               0x00fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141,
-               1)).
+ecc_name_curve(secp112r1,
+               curve(0x00db7c2abf62e35e668076bead208b,
+                     0x00db7c2abf62e35e668076bead2088,
+                     0x659ef8ba043916eede8911702b22,
+                     point(0x09487239995a5ee76b55f9c2f098,
+                           0xa89ce5af8724c0a23e0e0ff77500),
+                     0x00db7c2abf62e35e7628dfac6561c5,
+                     1)).
+ecc_name_curve(secp256k1,
+               curve(0x00fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f,
+                     0x0,
+                     0x7,
+                     point(0x79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798,
+                           0x483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8),
+                     0x00fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141,
+                     1)).
