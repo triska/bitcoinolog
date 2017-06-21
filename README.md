@@ -14,7 +14,8 @@ nice properties:
 
 Bitcoinolog requires a recent git version of SWI-Prolog.
 
-To invoke Bitcoinolog, use for example:
+To try it, download [**`bitcoinolog.pl`**](bitcoinolog.pl)
+and&nbsp;run:
 
     $ swipl bitcoinolog.pl
 
