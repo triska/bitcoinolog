@@ -50,12 +50,20 @@ For more information, visit:
 
 ## Elliptic Curve Cryptography in Prolog
 
-Bitcoinolog uses [**`ecclog.pl`**](ecclog.pl), which implements
-rudimentary reasoning over *elliptic&nbsp;curves* in&nbsp;Prolog.
-Internally,
+Bitcoinolog uses
+[**`library(crypto)`**](http://eu.swi-prolog.org/pldoc/man?section=crypto)
+for hashing and reasoning over *elliptic&nbsp;curves*.
+
+Alternatively, you can use [**`ecclog.pl`**](ecclog.pl) for reasoning
+over elliptic&nbsp;curves *in&nbsp;Prolog*. Simply use the `ecc_`
+predicates instead of those starting with&nbsp;`crypto_`:
+
+  - `crypto_curve_generator/2` &rightarrow; `ecc_curve_generator/2`
+  - `crypto_curve_order/2` &rightarrow; `ecc_curve_order/2`
+  - etc.
+
+Internally, `library(ecc)` uses
 [CLP(FD)&nbsp;constraints](https://www.metalevel.at/prolog/clpfd)
-are&nbsp;used to&nbsp;facilitate
+to&nbsp;facilitate
 [declarative&nbsp;debugging](https://www.metalevel.at/prolog/debugging).
 
-In the future, some features of this library may be provided by
-[`library(crypto)`](http://eu.swi-prolog.org/pldoc/man?section=crypto).
