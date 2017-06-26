@@ -12,7 +12,7 @@ nice properties:
   - keys can be generated **offline**, on a machine that has no
     Internet&nbsp;connection.
 
-Bitcoinolog requires a recent git version of SWI-Prolog.
+Bitcoinolog requires SWI-Prolog **7.5.10** or&nbsp;later.
 
 To try it, download [**`bitcoinolog.pl`**](bitcoinolog.pl)
 and&nbsp;run:
