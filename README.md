@@ -49,6 +49,8 @@ For more information, visit:
 
 [**https://www.metalevel.at/bitcoinolog/**](https://www.metalevel.at/bitcoinolog/)
 
+**Video**: https://www.metalevel.at/prolog/videos/bitcoinolog
+
 ## Elliptic Curve Cryptography in Prolog
 
 Bitcoinolog uses
