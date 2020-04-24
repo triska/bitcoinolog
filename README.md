@@ -66,7 +66,7 @@ predicates instead of those starting with&nbsp;`crypto_`:
   - etc.
 
 Internally, `library(ecc)` uses
-[CLP(FD)&nbsp;constraints](https://www.metalevel.at/prolog/clpfd)
+[CLP(ℤ)&nbsp;constraints](https://www.metalevel.at/prolog/clpz)
 to&nbsp;facilitate
 [declarative&nbsp;debugging](https://www.metalevel.at/prolog/debugging).
 
