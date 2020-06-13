@@ -7,7 +7,7 @@ BoringSSL to create Bitcoin addresses and private&nbsp;keys with
 several nice properties:
 
   - generated keys are **cryptographically&nbsp;secure** to the extent that
-    OpenSSL guarantees this property
+    BoringSSL guarantees this property
   - the Prolog code is **short** and uses **no external programs**
   - keys can be generated **offline**, on a machine that has no
     Internet&nbsp;connection.
@@ -54,7 +54,7 @@ For more information, visit:
 ## Elliptic Curve Cryptography in Prolog
 
 Bitcoinolog uses
-[**`library(crypto)`**](https://github.com/mthom/scryer-prolog/blob/master/src/prolog/lib/crypto.pl)
+[**`library(crypto)`**](https://github.com/mthom/scryer-prolog/blob/master/src/lib/crypto.pl)
 for hashing and reasoning over *elliptic&nbsp;curves*.
 
 Alternatively, you can use [**`ecclog.pl`**](ecclog.pl) for reasoning
