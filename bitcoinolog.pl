@@ -1,7 +1,7 @@
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    Bitcoinolog: Reason about Bitcoin addresses with Prolog.
 
-   Written 2017-2020 by Markus Triska (triska@metalevel.at)
+   Written 2017-2021 by Markus Triska (triska@metalevel.at)
 
    For more information, visit:
 
@@ -95,10 +95,10 @@ private_key_to_public_key(PrivateKey, PublicKey) :-
         Rem #= Y mod 2,
         zcompare(Cmp, 0, Rem),
         cmp0_prefix(Cmp, Prefix),
-        phrase(format_("~w~|~`0t~16r~64+", [Prefix,X]), PublicKey).
+        phrase(format_("~s~|~`0t~16r~64+", [Prefix,X]), PublicKey).
 
-cmp0_prefix(=, '02').
-cmp0_prefix(<, '03').
+cmp0_prefix(=, "02").
+cmp0_prefix(<, "03").
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    Convert a private key to Wallet Import Format (WIF).
@@ -177,8 +177,9 @@ hex_to_base58check(Hex, Base58Check) :-
         hex_bytes(Hex, Bytes),
         once(phrase(leading_zeroes(Bytes), Base58Check, Bs)).
 
-leading_zeroes([0|Rest]) --> ['1'], leading_zeroes(Rest).
-leading_zeroes([D|_]) --> { D #\= 0 }.
+leading_zeroes([])       --> [].
+leading_zeroes([0|Rest]) --> "1", leading_zeroes(Rest).
+leading_zeroes([D|_])    --> { D #\= 0 }.
 
 base58check(I0) -->
         { zcompare(C, 0, I0) },
@@ -193,20 +194,15 @@ base58check_(<, I0) --> [Char],
         base58check(I).
 
 base58check_to_integer(B58, Integer) :-
-        reverse(B58, Chars),
-        foldl(pow58, Chars, 0-0, Integer-_).
+        foldl(base58_times58, B58, 0, Integer).
 
-pow58(Char, N0-I0, N-I) :-
+base58_times58(Char, S0, S) :-
         base58_alphabet(As),
         nth0(Value, As, Char),
-        N #= N0 + Value*58^I0,
-        I #= I0 + 1.
+        S #= S0*58 + Value.
 
 hex_to_integer(Hex, Integer) :-
-        hex_bytes(Hex, Bytes0),
-        reverse(Bytes0, Bytes),
-        foldl(pow256, Bytes, 0-0, Integer-_).
+        hex_bytes(Hex, Bytes),
+        foldl(plus_times256, Bytes, 0, Integer).
 
-pow256(Byte, N0-I0, N-I) :-
-        N #= N0 + Byte*256^I0,
-        I #= I0 + 1.
+plus_times256(B, S0, S) :- S #= S0*256 + B.
