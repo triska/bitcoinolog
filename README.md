@@ -2,12 +2,12 @@
 
 ## Offline Bitcoin wallet creation
 
-*Bitcoinolog* uses [Prolog](https://www.metalevel.at/prolog) and
-BoringSSL to create Bitcoin addresses and private&nbsp;keys with
-several nice properties:
+*Bitcoinolog* uses [Prolog](https://www.metalevel.at/prolog) and the
+[`crrl`](https://github.com/pornin/crrl/) crate to create Bitcoin
+addresses and private&nbsp;keys with several nice properties:
 
   - generated keys are **cryptographically&nbsp;secure** to the extent that
-    BoringSSL guarantees this property
+    `crrl` guarantees this property
   - the Prolog code is **short** and uses **no external programs**
   - keys can be generated **offline**, on a machine that has no
     Internet&nbsp;connection.
