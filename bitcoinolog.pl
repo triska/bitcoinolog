@@ -1,7 +1,7 @@
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    Bitcoinolog: Reason about Bitcoin addresses with Prolog.
 
-   Written 2017-2021 by Markus Triska (triska@metalevel.at)
+   Written 2017-2024 by Markus Triska (triska@metalevel.at)
 
    For more information, visit:
 
@@ -158,7 +158,8 @@ public_key_to_address(PublicKey, Address) :-
 
 hex_algorithm_hash(Hex, Algorithm, Hash) :-
         hex_bytes(Hex, Bytes),
-        crypto_data_hash(Bytes, Hash, [algorithm(Algorithm),
+        maplist(char_code, Chars, Bytes),
+        crypto_data_hash(Chars, Hash, [algorithm(Algorithm),
                                        encoding(octet)]).
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
